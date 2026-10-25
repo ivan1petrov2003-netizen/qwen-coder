@@ -60,6 +60,16 @@ app.use((err, req, res, next) => {
   res.status(400).json({ error: err.message || 'Ошибка сервера' });
 });
 
-app.listen(config.port, () => {
+const server = app.listen(config.port, () => {
   console.log(`Сервер «Облако» запущен: http://localhost:${config.port}`);
+});
+
+// Понятное сообщение, если порт уже занят другим процессом
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`Ошибка: порт ${config.port} уже занят другим процессом.`);
+    console.error('Освободите порт или укажите другой, например: set PORT=4000 && npm start');
+    process.exit(1);
+  }
+  throw err;
 });
