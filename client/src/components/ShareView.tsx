@@ -4,7 +4,12 @@ import { api } from '../api';
 import { fmtSize } from '../api';
 import { useStore } from '../store';
 
-interface ShareNode { folders: { id: number; name: string; path: string; children: any }[]; files: any[] }
+// Узел дерева публичной ссылки: имя + вложенные папки/файлы
+interface ShareNode {
+  name?: string;
+  folders: { id: number; name: string; path: string; children: ShareNode }[];
+  files: any[];
+}
 
 function TreeNode({ node, depth, onPreview }: { node: ShareNode; depth: number; onPreview: (f: any) => void }) {
   const [open, setOpen] = useState(depth === 0);

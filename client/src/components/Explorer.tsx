@@ -150,13 +150,13 @@ export default function Explorer() {
   };
   const newFolder = () => {
     if (!canWrite || !curFolder) return toast('Нельзя создавать папки здесь', 'err');
-    setPrompt({ title: 'Новая папка', initial: 'Новая папка', onOk: async (name) => {
+    setPrompt({ title: 'Новая папка', initial: 'Новая папка', onOk: async (name: string) => {
       await api.post('/api/folders', { parentId: curFolder.id, name });
       toast(`Папка «${name}» создана`, 'ok'); reload();
     }});
   };
   const rename = (kind: 'file' | 'folder', item: any) => {
-    setPrompt({ title: 'Переименовать', initial: item.name, okTextCustom: undefined as any, onOk: async (name) => {
+    setPrompt({ title: 'Переименовать', initial: item.name, okTextCustom: undefined as any, onOk: async (name: string) => {
       if (kind === 'file') await api.patch(`/api/files/${item.id}`, { name });
       else await api.patch(`/api/folders/${item.id}`, { name });
       toast('Переименовано', 'ok'); reload();
